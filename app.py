@@ -6,6 +6,7 @@ import os
 import json
 from langchain_pinecone.embeddings import PineconeEmbeddings
 from langchain_pinecone import PineconeVectorStore
+from pinecone import Pinecone
 
 from langchain_text_splitters.character import CharacterTextSplitter
 
