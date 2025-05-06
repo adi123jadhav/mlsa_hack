@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+       "src": "app.py", "use": "@vercel/python" ,
+      "config": {
+        "maxLambdaSize": "50mb",              
+        "installCommand": "pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt"
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "app.py"}
+  ]
+}
