@@ -1,8 +1,8 @@
 ﻿langchain_core
 langchain_pinecone
 pinecone
-langserve
 flask
 langchain_google_genai
-langgraph
+
 langchain
+langchain_community
