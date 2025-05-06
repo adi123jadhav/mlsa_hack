@@ -4,28 +4,36 @@ from langchain.prompts import PromptTemplate
 from langchain_community.document_loaders import TextLoader
 import os
 import json
+from langchain_pinecone.embeddings import PineconeEmbeddings
+from langchain_pinecone import PineconeVectorStore
 
 from langchain_text_splitters.character import CharacterTextSplitter
-from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
+
 from langchain_groq import ChatGroq
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 app = Flask(__name__)
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = ""
+os.environ["LANGCHAIN_TOKENIZERS"] = "tiktoken"
 
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "your-very-secure-random-key")
 
-GROQ_API_KEY = ""
-os.environ["GROQ_API_KEY"] = GROQ_API_KEY
+GROQ_API_KEY     = os.getenv("GROQ_API_KEY",     "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")
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "pcsk_28nk7X_JU7vRP8FrELuPW84XdhXUSKa3mH8n4LdQw6aXzpFAUgmzC7peQQ25Atpk67M2MU")
+
+pc = Pinecone(PINECONE_API_KEY)
+index = pc.Index("mlsa")
+
+embeddings = PineconeEmbeddings(
+    api_key=PINECONE_API_KEY,
+    model="multilingual-e5-large",
+)
 
 # Load initial documents
-loader = TextLoader(r"enter your requirment file path")
+
 loader = TextLoader(r"C:\Users\KIIT\Documents\GitHub\mlsa_hack\chatbot\chatbot\map_description.txt")
 documents = loader.load()
 
 # Initialize embeddings and vector store
-embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
 text_splitter = CharacterTextSplitter(
     separator="/n",
     chunk_size=1000,
@@ -33,7 +41,7 @@ text_splitter = CharacterTextSplitter(
 )
 
 doc_chunks = text_splitter.split_documents(documents)
-vectorstore = FAISS.from_documents(doc_chunks, embeddings)
+vector_store = PineconeVectorStore(embedding=embeddings, index=index)
 
 
 # Initialize LLM and memory
@@ -52,7 +60,7 @@ memory = ConversationBufferMemory(
 chain = ConversationalRetrievalChain.from_llm(
     llm=llm,
     retriever=retriever,
-    chain_type="map_reduce",
+    chain_type="stuff",
     memory=memory,
     verbose=True
 )
