@@ -47,8 +47,9 @@ vector_store = PineconeVectorStore(embedding=embeddings, index=index)
 
 # Initialize LLM and memory
 llm = ChatGroq(
-    model="llama-3.1-70b-versatile",
-    temperature=0.9
+    api_key=GROQ_API_KEY,
+    model="llama-3.3-70b-versatile",
+    temperature=0.5
 )
 retriever = vectorstore.as_retriever()
 memory = ConversationBufferMemory(
