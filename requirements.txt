@@ -3,6 +3,6 @@ langchain_pinecone
 pinecone
 flask
 langchain_google_genai
-
+langchain_groq
 langchain
 langchain_community
