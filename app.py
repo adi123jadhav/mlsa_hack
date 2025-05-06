@@ -42,7 +42,7 @@ text_splitter = CharacterTextSplitter(
 )
 
 doc_chunks = text_splitter.split_documents(documents)
-vector_store = PineconeVectorStore(embedding=embeddings, index=index)
+vectorstore = PineconeVectorStore(embedding=embeddings, index=index)
 
 
 # Initialize LLM and memory
