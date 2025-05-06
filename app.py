@@ -31,7 +31,7 @@ embeddings = PineconeEmbeddings(
 
 # Load initial documents
 
-loader = TextLoader(r"C:\Users\KIIT\Documents\GitHub\mlsa_hack\chatbot\chatbot\map_description.txt")
+loader = TextLoader('map_description.txt')
 documents = loader.load()
 
 # Initialize embeddings and vector store
