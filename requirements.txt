@@ -5,3 +5,4 @@ langserve
 flask
 langchain_google_genai
 langgraph
+langchain
